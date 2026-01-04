@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOHAT - Natural Stone Collection</title>
+    <style>
+        :root {
+            --primary: #5a4a3a;
+            --accent: #c9a870;
+            --dark: #3d2f24;
+            --light: #f4ede5;
+            --text: #2a2a2a;
+            --secondary: #8b9b8c;
+            --highlight: #b8a89c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: var(--primary);
+            padding: 1rem 2rem;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            color: var(--accent);
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin-left: auto;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #7a6a5a 100%);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-style: italic;
+        }
+
+        .hero-subtext {
+            font-size: 1rem;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+
+        /* About Section */
+        .about {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .about p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        /* Collections Grid */
+        .collections {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            text-align: center;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            margin-left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .stone-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .stone-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h2 {
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text);
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--accent);
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .stone-detail-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .stone-detail-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .stone-detail-info h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stone-detail-info p {
+            color: #555;
+            line-height: 1.8;
+            margin: 0.5rem 0;
+        }
+
+        .finitions-section h4 {
+            color: var(--primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-footer button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .contact-btn {
+            background: var(--accent);
+            color: white;
+        }
+
+        .contact-btn:hover {
+            background: #a68c55;
+        }
+
+        .close-modal-btn {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .close-modal-btn:hover {
+            background: #7a8b7d;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 1.5rem;
+                width: 90%;
+            }
+
+            .stone-detail-image {
+                height: 250px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+        }
+
+        .stone-card-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .stone-card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .stone-type {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .stone-card-body {
+            padding: 1.5rem;
+        }
+
+        .stone-description {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .finitions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .finition-badge {
+            background: rgba(201, 168, 112, 0.15);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--primary);
+            color: white;
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .contact-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact h2 {
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: var(--accent);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-item h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-item p {
+            margin-bottom: 0.5rem;
+            line-height: 1.8;
+        }
+
+        .contact-item a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .contact-item a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: #4a3a2a;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            border-top: 3px solid var(--accent);
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .toggle-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: #a68c55;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .stone-card-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">YOHAT</div>
+            <ul class="nav-links">
+                <li><a href="#collections">Collections</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>YOHAT</h1>
+        <p class="hero-subtext">From the land of Algeria, art is born</p>
+        <p>Exclusive collection of exceptional natural stones</p>
+        <p style="margin-top: 2rem; font-style: normal; font-size: 1.1rem;">"From our land comes our finest stone"</p>
+    </div>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <h2>About YOHAT</h2>
+        <p>
+            YOHAT is a company specialized in the extraction, processing and marketing of 100% Algerian natural stones.
+        </p>
+        <p>
+            We offer a wide range of materials for construction, interior design and architecture: marble, granite, travertine, sandstone and onyx.
+        </p>
+        <p>
+            With full control of the production chain, YOHAT guarantees high-quality products that meet the technical and aesthetic requirements of both professionals and private customers.
+        </p>
+    </section>
+
+    <!-- Collections -->
+    <section class="collections" id="collections">
+        <!-- Travertine -->
+        <h2 class="section-title">TRAVERTINE</h2>
+        <div class="collection-grid">
+            <div class="stone-card" data-stone="wooden">
+                <img src="/images/WOODEN-TRAVERTIN.jpg" alt="WOODEN Travertine YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Wooden</h3>
+                    <p class="stone-type">Travertine</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A travertine with natural charm whose appearance subtly recalls wood. Its linear veins and beige, light brown and honey tones evoke the grain of aged wood.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="golden">
+                <img src="/images/GOLDEN-TRAVERTIN.jpg" alt="GOLDEN Travertine YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Golden</h3>
+                    <p class="stone-type">Travertine</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A bright, warm travertine with golden, honey and sand tones, crossed by subtle, irregular onyx agate veins.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="cinnamon">
+                <img src="/images/CINNAMON-TRAVERTIN.jpg" alt="CINNAMON Travertine YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Cinnamon</h3>
+                    <p class="stone-type">Travertine</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A stone with brown shades inspired by moist earth, with tones between chocolate, tobacco and clay, crossed by irregular veins and touches of onyx agate.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="silver">
+                <img src="/images/SILVER-TRAVERTIN.jpg" alt="SILVER Travertine YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Silver</h3>
+                    <p class="stone-type">Travertine</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        An elegant stone with subtle grey shades, from light grey to slate, whose fine natural veins add movement and depth while keeping visual harmony.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Marble -->
+        <h2 class="section-title" style="margin-top: 3rem;">MARBLE</h2>
+        <div class="collection-grid">
+            <div class="stone-card" data-stone="storm">
+                <img src="/images/STORM.jpg" alt="STORM Marbre YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Storm</h3>
+                    <p class="stone-type">Marbre</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A deep grey marble animated by dynamic veins in golden, white and charcoal tones, evoking the raw energy of a stormy sky.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="tiger">
+                <img src="/images/TIGER.jpg" alt="TIGER Marble YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Tiger</h3>
+                    <p class="stone-type">Marble</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A sober grey marble punctuated with fine, linear veins that discreetly recall a tiger's coat.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="ramad">
+                <img src="/images/RAMAD.jpg" alt="RAMAD Marble YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Ramad</h3>
+                    <p class="stone-type">Marble</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A marble with a uniform grey background, evoking the softness and purity of ash, whose smooth surface brings calm and simplicity.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="maraya">
+                <img src="/images/MARAYA.jpg" alt="MARAYA Marble YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Maraya</h3>
+                    <p class="stone-type">Onyx Marble</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        An onyx marble with soft, natural elegance. Its translucent surface reveals fine beige and cream shades. Composed of 25% wollastonite.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="nayyara">
+                <img src="/images/NAYYARA.jpg" alt="NAYYARA Marble YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Nayyara</h3>
+                    <p class="stone-type">Marble</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A white marble with delicate grey nuances that recalls a soft, silent mist, creating a light and serene atmosphere.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="phoenix">
+                <img src="/images/PHENIX.jpg" alt="PHOENIX Marble YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Phoenix</h3>
+                    <p class="stone-type">Marble</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A deep black marble crossed by changing veins in golden, brown and white tones which, once polished, reveals a mirror effect.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="anaconda">
+                <img src="/images/ANACONDA.jpg" alt="ANACONDA Marble YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Anaconda</h3>
+                    <p class="stone-type">Marble</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A marble with a wild, organic character, crossed by fluid waves where green and brown tones blend into a deep, natural movement.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="flowers">
+                <img src="/images/FLOWERS.jpg" alt="FLOWERS Marble YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Flowers</h3>
+                    <p class="stone-type">Marble</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A marble with a delicate grey background scattered with large pink motifs reminiscent of blooming flowers, blending grey and pink in harmony.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="picasso">
+                <img src="/images/PICASSO.jpg" alt="PICASSO Marble YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Picasso</h3>
+                    <p class="stone-type">Marble</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A marble defined by a bold contrast of blacks and greys, animated by irregular veins in shades ranging from pink to brick, like an abstract painting.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="catacla">
+                <img src="/images/CATACLA.jpg" alt="CATACLA Marble YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Catacla</h3>
+                    <p class="stone-type">Marble</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A marble marked by chaotic shades and broken patterns, evoking the traces of a cataclysm frozen in stone. Each slab seems to tell a deep story.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Granite -->
+        <h2 class="section-title" style="margin-top: 3rem;">GRANITE</h2>
+        <div class="collection-grid">
+            <div class="stone-card" data-stone="sapphir">
+                <img src="/images/SAPHIR.jpg" alt="SAPHIR Granit YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Sapphir</h3>
+                    <p class="stone-type">Granit</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A rare and refined granite whose beauty recalls the gemstone of the same name. On a dark base stretch delicate bluish veins.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="cosmos">
+                <img src="/images/COSMOS.jpg" alt="COSMOS Granite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Cosmos</h3>
+                    <p class="stone-type">Granite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        An exceptional granite, a celestial stone frozen in matter. Its dark surface is dotted with silvery and bluish sparks, like stars.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="argon">
+                <img src="/images/ARGON-1.jpg" alt="ARGON Granite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Argon</h3>
+                    <p class="stone-type">Granite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A fine-grained grey granite whose nuanced pattern creates a subtle, balanced visual effect. Highly resistant to impact and temperature variations.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="rosana">
+                <img src="/images/ROSANA.jpg" alt="ROSANA Granite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Rosana</h3>
+                    <p class="stone-type">Granite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        This granite has a deep brown base crossed by subtle pinkish shades with soft, pearly reflections.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="havana">
+                <img src="/images/HAVANA.jpg" alt="HAVANA Granite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Havana</h3>
+                    <p class="stone-type">Granite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        An elegant granite with deep brown shades, evoking the character of a Cuban cigar. Dotted with pink, white and black quartz crystals.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="coral">
+                <img src="/images/CORAL.jpg" alt="CORAL Granite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Coral</h3>
+                    <p class="stone-type">Granite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        An exceptional granite with warm, mineral tones, dotted with green and pink crystals that evoke the beauty of coral reefs.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="emerald">
+                <img src="/images/EMERALD.jpg" alt="EMERALD Granite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Emerald</h3>
+                    <p class="stone-type">Granite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A high-end granite with a deep green tone enhanced by dark and bright crystals. Very resistant and non-porous.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="lunar">
+                <img src="/images/LUNAR.jpg" alt="LUNAR Granite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Lunar</h3>
+                    <p class="stone-type">Granite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A spectacular granite whose unique appearance evokes the mysterious surface of the Moon. A true blend of fragments fused and crystallized together.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="allegra">
+                <img src="/images/ALLEGRA.jpg" alt="ALLEGRA Granite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Allegra</h3>
+                    <p class="stone-type">Granite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        An exceptional granite, a true celebration of nature. Its deep green background is crossed by veins in different green tones.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="crystal">
+                <img src="/images/CRYSTAL.jpg" alt="CRYSTAL Granite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Crystal</h3>
+                    <p class="stone-type">Granite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        This green granite offers a natural, soothing balance. Its surface is structured by large grains that catch the light.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onyx -->
+        <h2 class="section-title" style="margin-top: 3rem;">ONYX</h2>
+        <div class="collection-grid">
+            <div class="stone-card" data-stone="darkonyx">
+                <img src="/images/DARK-ONYX.jpg" alt="DARK ONYX Onyx YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Dark Onyx</h3>
+                    <p class="stone-type">Onyx</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A remarkable stone, light beige background crossed by fluid waves. Its translucent surface captures light delicately. Composed of 25% wollastonite.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="lightonyx">
+                <img src="/images/LIGHT-ONYX.jpg" alt="LIGHT ONYX Onyx YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Light Onyx</h3>
+                    <p class="stone-type">Onyx</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        A very refined stone with a light beige background animated by delicate waves. Composed of 25% wollastonite, it stays cool even in full sun.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="exoticonyx">
+                <img src="/images/EXOTIC-ONYX.jpg" alt="EXOTIC ONYX Onyx YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Exotic Onyx</h3>
+                    <p class="stone-type">Onyx</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        Composed of wollastonite, Exotic Onyx combines translucency and mineral softness. Its colourful, vibrant and nuanced veins seem to be the very source of the rainbow.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wollastonite -->
+        <h2 class="section-title" style="margin-top: 3rem;">WOLLASTONITE</h2>
+        <div class="collection-grid">
+            <div class="stone-card" data-stone="harlequin">
+                <img src="/images/HARLEQUIN.jpg" alt="HARLEQUIN Wollastonite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Harlequin</h3>
+                    <p class="stone-type">Wollastonite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        Harlequin combines strength and aesthetics with strong grey patterns on a bright white background. Exceptionally resistant, it withstands acids.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="ice">
+                <img src="/images/ICE.jpg" alt="ICE Wollastonite YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Ice</h3>
+                    <p class="stone-type">Wollastonite</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        An exceptional stone with brilliant whiteness crossed by fine grey veins. With unmatched robustness, it resists extreme aggression.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sandstone -->
+        <h2 class="section-title" style="margin-top: 3rem;">SANDSTONE</h2>
+        <div class="collection-grid">
+            <div class="stone-card" data-stone="sandrose">
+                <img src="/images/SAND-ROSE.jpg" alt="SAND ROSE Sandstone YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>Sand Rose</h3>
+                    <p class="stone-type">Sandstone</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        Sand Rose reveals a delicate palette of sand and pink tones. Composed mainly of silica, it combines lightness and strength.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stone-card" data-stone="nadjer">
+                <img src="/images/N-ADJER-STONE.jpg" alt="N'ADJER STONE Sandstone YOHAT" style="width:100%; height:200px; object-fit:cover; border-radius: 8px 8px 0 0;">
+                <div class="stone-card-header">
+                    <h3>N'Adjer Stone</h3>
+                    <p class="stone-type">Sandstone</p>
+                </div>
+                <div class="stone-card-body">
+                    <p class="stone-description">
+                        Extracted from the majestic Tassili N'Ajjer plateau in the heart of the Algerian Sahara. Its slightly grey‑beige tones are inspired by the arid reliefs of this mythical region.
+                    </p>
+                    <div class="finitions">
+                        <span class="finition-badge">Polished</span>
+                        <span class="finition-badge">Bush-hammered</span>
+                        <span class="finition-badge">Honed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <h2>Contact Us</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <h3>📍 Phone</h3>
+                    <p><a href="tel:+213658503788">+213 658 50 37 88</a></p>
+                </div>
+                <div class="contact-item">
+                    <h3>📍 Email</h3>
+                    <p><a href="mailto:youcefbelhouari6@gmail.com">youcefbelhouari6@gmail.com</a></p>
+                </div>
+            </div>
+            <div style="margin-top: 2rem; border-top: 2px solid var(--accent); padding-top: 2rem;">
+                <h3 style="color: var(--accent); margin-bottom: 1rem;">Locations</h3>
+                <p>Blida, Algeria</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stone Details Modal -->
+    <div id="stoneModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalStoneName">Stone Name</h2>
+                    <p style="color: var(--secondary); margin: 0.5rem 0 0 0; font-weight: 500;" id="modalStoneType">Type</p>
+                </div>
+                <button class="close-btn">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <img id="modalStoneImage" src="" alt="Stone" class="stone-detail-image">
+                
+                <div class="stone-detail-info">
+                    <h3>Description</h3>
+                    <p id="modalDescription"></p>
+                </div>
+                
+                <div class="stone-detail-info">
+                    <h3>Characteristics</h3>
+                    <p id="modalCharacteristics"></p>
+                </div>
+                
+                <div class="stone-detail-info">
+                    <h3>Applications</h3>
+                    <p id="modalApplications"></p>
+                </div>
+                
+                <div class="stone-detail-info">
+                    <h4>Available Finitions</h4>
+                    <div id="modalFinitions" class="finitions"></div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="contact-btn">Contact for Info</button>
+                <button class="close-modal-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 YOHAT. All rights reserved.</p>
+        <p style="font-style: italic; color: var(--accent); margin-top: 1rem;">
+            "Your trust is the cornerstone of our success."
+        </p>
+    </footer>
+
+    <script>
+        // Smooth scroll navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeIn 0.6s ease-in forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.stone-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Modal functionality for stone details
+        const modal = document.getElementById('stoneModal');
+        const closeBtn = document.querySelector('.close-btn');
+        const closeModalBtn = document.querySelector('.close-modal-btn');
+        const contactBtn = document.querySelector('.contact-btn');
+
+        // Store stone data
+        const stoneData = {
+            'wooden': {
+                name: 'Wooden',
+                type: 'Travertine',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/1b93b733-fa92-4659-8e41-a1f4d29483e7',
+                description: 'A travertine with natural charm whose appearance subtly recalls wood. Its linear veins and beige, light brown and honey tones evoke the grain of aged wood.',
+                characteristics: 'Natural elegance with wood-like appearance, warm earth tones, linear vein patterns',
+                applications: 'Flooring, wall cladding, interior design, luxury finishes',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'golden': {
+                name: 'Golden',
+                type: 'Travertine',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/83fc7bfe-6b99-4ed4-a830-6705ccf46267',
+                description: 'A bright, warm travertine with golden, honey and sand tones, crossed by subtle, irregular onyx agate veins.',
+                characteristics: 'Warm golden hues, honey tones, subtle onyx agate veins, bright appearance',
+                applications: 'Premium flooring, decorative walls, architectural accents',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'cinnamon': {
+                name: 'Cinnamon',
+                type: 'Travertine',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/17477ac9-fff5-4838-ad89-7b66bd7f5177',
+                description: 'A stone with brown shades inspired by moist earth, with tones between chocolate, tobacco and clay, crossed by irregular veins and touches of onyx agate.',
+                characteristics: 'Rich brown tones, chocolate to tobacco shades, earthy appearance, irregular veining',
+                applications: 'Modern interior design, accent walls, sophisticated flooring',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'silver': {
+                name: 'Silver',
+                type: 'Travertine',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/40b37d66-7e11-4630-9202-201bc1e9b349',
+                description: 'An elegant stone with subtle grey shades, from light grey to slate, whose fine natural veins add movement and depth while keeping visual harmony.',
+                characteristics: 'Subtle grey tones, light to slate shades, fine natural veins, harmonious appearance',
+                applications: 'Contemporary design, premium finishes, elegant spaces',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'storm': {
+                name: 'Storm',
+                type: 'Marble',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/8120fdd9-3b1b-4c89-bdc2-4af772bb9604',
+                description: 'A deep grey marble animated by dynamic veins in golden, white and charcoal tones, evoking the raw energy of a stormy sky.',
+                characteristics: 'Deep grey base, dynamic veining, golden and charcoal accents, dramatic appearance',
+                applications: 'Luxury interiors, statement walls, premium architectural finishes',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'tiger': {
+                name: 'Tiger',
+                type: 'Marble',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/92c1c860-08dc-4023-8a7f-6bba7299f7ac',
+                description: 'A sober grey marble punctuated with fine, linear veins that discreetly recall a tiger\'s coat.',
+                characteristics: 'Sober grey tones, fine linear veins, subtle pattern, elegant appearance',
+                applications: 'Contemporary design, sophisticated interiors, refined finishes',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'ramad': {
+                name: 'Ramad',
+                type: 'Marble',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/bdf47201-fde7-4f20-bc0e-203b8a091544',
+                description: 'A marble with a uniform grey background, evoking the softness and purity of ash, whose smooth surface brings calm and simplicity.',
+                characteristics: 'Uniform grey background, soft appearance, pure and simple aesthetic',
+                applications: 'Minimalist interiors, calm spaces, modern design',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'maraya': {
+                name: 'Maraya',
+                type: 'Onyx Marble',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/7ab80181-335d-4926-90fe-0c86e6c02a78',
+                description: 'An onyx marble with soft, natural elegance. Its translucent surface reveals fine beige and cream shades. Composed of 25% wollastonite.',
+                characteristics: 'Translucent surface, soft elegance, beige and cream tones, 25% wollastonite composition',
+                applications: 'Backlit installations, luxury interiors, translucent design features',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'nayyara': {
+                name: 'Nayyara',
+                type: 'Marble',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/c13b0079-089a-48da-b5f3-54907cb32adf',
+                description: 'A white marble with delicate grey nuances that recalls a soft, silent mist, creating a light and serene atmosphere.',
+                characteristics: 'White base with delicate grey nuances, misty appearance, serene aesthetic',
+                applications: 'Light interiors, peaceful spaces, elegant marble finishes',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'phoenix': {
+                name: 'Phoenix',
+                type: 'Marble',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/790ec16f-8675-4611-b541-03d9157d254d',
+                description: 'A deep black marble crossed by changing veins in golden, brown and white tones which, once polished, reveals a mirror effect.',
+                characteristics: 'Deep black base, changing veins in gold/brown/white, mirror polish effect',
+                applications: 'Luxury installations, dramatic interiors, high-end finishes',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'anaconda': {
+                name: 'Anaconda',
+                type: 'Marble',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/e7ed3d28-ae99-4133-aa1c-a7e76b1ce700',
+                description: 'A marble with a wild, organic character, crossed by fluid waves where green and brown tones blend into a deep, natural movement.',
+                characteristics: 'Wild organic character, fluid waves, green and brown tones, natural movement',
+                applications: 'Artistic interiors, natural design, statement installations',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'flowers': {
+                name: 'Flowers',
+                type: 'Marble',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/7f706d57-d030-4cf7-9238-64d6c8f67d0c',
+                description: 'A marble with a delicate grey background scattered with large pink motifs reminiscent of blooming flowers, blending grey and pink in harmony.',
+                characteristics: 'Delicate grey background, pink flower-like motifs, harmonious color blend',
+                applications: 'Feminine design, decorative elements, artistic interiors',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'picasso': {
+                name: 'Picasso',
+                type: 'Marble',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/84d032c2-6a7e-43fb-b1ac-67e69d5b37da',
+                description: 'A marble defined by a bold contrast of blacks and greys, animated by irregular veins in shades ranging from pink to brick, like an abstract painting.',
+                characteristics: 'Bold black/grey contrast, irregular veining, pink to brick accents, abstract appearance',
+                applications: 'Artistic installations, modern art interiors, statement walls',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'catacla': {
+                name: 'Catacla',
+                type: 'Marble',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/96bf02b7-82c4-4d6b-a8a3-fafee86bc608',
+                description: 'A marble marked by chaotic shades and broken patterns, evoking the traces of a cataclysm frozen in stone. Each slab seems to tell a deep story.',
+                characteristics: 'Chaotic shades, broken patterns, dramatic appearance, unique storytelling',
+                applications: 'Bold architectural statements, dramatic design, artistic interiors',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'sapphir': {
+                name: 'Sapphir',
+                type: 'Granite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/54b28bd5-57ea-4ff1-b683-38606e4a8e03',
+                description: 'A rare and refined granite whose beauty recalls the gemstone of the same name. On a dark base stretch delicate bluish veins.',
+                characteristics: 'Rare refined appearance, dark base, delicate bluish veins, gem-like quality',
+                applications: 'Premium installations, luxury finishes, statement designs',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'cosmos': {
+                name: 'Cosmos',
+                type: 'Granite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/f8f6f98d-964b-4138-9285-ee59d793e3ad',
+                description: 'An exceptional granite, a celestial stone frozen in matter. Its dark surface is dotted with silvery and bluish sparks, like stars.',
+                characteristics: 'Celestial appearance, dark surface, silvery and bluish sparkles, star-like effect',
+                applications: 'High-end interiors, astronomical-themed design, luxury finishes',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'argon': {
+                name: 'Argon',
+                type: 'Granite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/de134308-73d9-4e33-979d-8bc8d6d17623',
+                description: 'A fine-grained grey granite whose nuanced pattern creates a subtle, balanced visual effect. Highly resistant to impact and temperature variations.',
+                characteristics: 'Fine-grained, grey tones, balanced patterns, highly resistant durability',
+                applications: 'Durable flooring, kitchen counters, high-traffic areas',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'rosana': {
+                name: 'Rosana',
+                type: 'Granite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/4a5049ac-89c2-43e4-97ab-63e4fbeec3c1',
+                description: 'This granite has a deep brown base crossed by subtle pinkish shades with soft, pearly reflections.',
+                characteristics: 'Deep brown base, subtle pinkish shades, pearly reflections, warm appearance',
+                applications: 'Warm interiors, decorative finishes, luxury applications',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'havana': {
+                name: 'Havana',
+                type: 'Granite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/3b01031c-a19b-46b0-8530-3a659737193f',
+                description: 'An elegant granite with deep brown shades, evoking the character of a Cuban cigar. Dotted with pink, white and black quartz crystals.',
+                characteristics: 'Deep brown shades, pink/white/black quartz crystals, cigar-like elegance',
+                applications: 'Sophisticated design, elegant interiors, premium finishes',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'coral': {
+                name: 'Coral',
+                type: 'Granite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/8ed7c0ae-594d-479d-b86c-edf419428272',
+                description: 'An exceptional granite with warm, mineral tones, dotted with green and pink crystals that evoke the beauty of coral reefs.',
+                characteristics: 'Warm mineral tones, green and pink crystals, coral reef inspiration',
+                applications: 'Vibrant interiors, artistic installations, nature-inspired design',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'emerald': {
+                name: 'Emerald',
+                type: 'Granite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/98918681-da07-469e-ad2c-7151014d1807',
+                description: 'A high-end granite with a deep green tone enhanced by dark and bright crystals. Very resistant and non-porous.',
+                characteristics: 'Deep green tone, contrasting dark and bright crystals, highly resistant',
+                applications: 'Premium installations, durable finishes, non-porous applications',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'lunar': {
+                name: 'Lunar',
+                type: 'Granite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/728c7c86-742d-4c9c-9350-6cdad6b6ac9e',
+                description: 'A spectacular granite whose unique appearance evokes the mysterious surface of the Moon. A true blend of fragments fused and crystallized together.',
+                characteristics: 'Lunar surface appearance, fused crystallized fragments, mysterious aesthetic',
+                applications: 'Astronomical-themed design, luxury interiors, dramatic installations',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'allegra': {
+                name: 'Allegra',
+                type: 'Granite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/0f3349de-ddec-41a0-9615-f8e43a44f827',
+                description: 'An exceptional granite, a true celebration of nature. Its deep green background is crossed by veins in different green tones.',
+                characteristics: 'Deep green background, multi-tone green veining, nature celebration',
+                applications: 'Natural design, premium interiors, artistic installations',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'crystal': {
+                name: 'Crystal',
+                type: 'Granite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/8e1185f3-722c-4144-8d3f-b7524d8c7232',
+                description: 'This green granite offers a natural, soothing balance. Its surface is structured by large grains that catch the light.',
+                characteristics: 'Natural green tone, soothing appearance, large light-catching grains',
+                applications: 'Calming interiors, natural finishes, balanced design',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'dark onyx': {
+                name: 'Dark Onyx',
+                type: 'Onyx',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/0df03c6d-33bd-48f2-938e-cdf6388031f3',
+                description: 'A remarkable stone, light beige background crossed by fluid waves. Its translucent surface captures light delicately. Composed of 25% wollastonite.',
+                characteristics: 'Light beige background, fluid wave patterns, translucent, 25% wollastonite',
+                applications: 'Backlit installations, luxury interiors, translucent wall designs',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'light onyx': {
+                name: 'Light Onyx',
+                type: 'Onyx',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/f3fda231-7a5d-4de9-8811-df6c46598ef5',
+                description: 'A very refined stone with a light beige background animated by delicate waves. Composed of 25% wollastonite, it stays cool even in full sun.',
+                characteristics: 'Light beige refined appearance, delicate waves, cool temperature, 25% wollastonite',
+                applications: 'Outdoor luxury finishes, interior elegance, thermal-efficient design',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'exotic onyx': {
+                name: 'Exotic Onyx',
+                type: 'Onyx',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/3458612a-7a57-4438-9fc7-aa8172194aad',
+                description: 'Composed of wollastonite, Exotic Onyx combines translucency and mineral softness. Its colourful, vibrant and nuanced veins seem to be the very source of the rainbow.',
+                characteristics: 'Wollastonite composition, rainbow-like vibrant veins, mineral softness',
+                applications: 'Artistic backlit installations, colorful luxury design, creative interiors',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'harlequin': {
+                name: 'Harlequin',
+                type: 'Wollastonite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/0042d32e-d4fa-47a4-8f1e-7334e26751ed',
+                description: 'Harlequin combines strength and aesthetics with strong grey patterns on a bright white background. Exceptionally resistant, it withstands acids.',
+                characteristics: 'Strong grey patterns, bright white background, acid-resistant, exceptional durability',
+                applications: 'Industrial finishes, acid-resistant counters, chemical-resistant installations',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'ice': {
+                name: 'Ice',
+                type: 'Wollastonite',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/6f50b1c6-402b-438e-ae6f-f16393dff295',
+                description: 'An exceptional stone with brilliant whiteness crossed by fine grey veins. With unmatched robustness, it resists extreme aggression.',
+                characteristics: 'Brilliant whiteness, fine grey veins, extreme durability, unmatched robustness',
+                applications: 'High-durability installations, laboratory settings, extreme-condition applications',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'sand rose': {
+                name: 'Sand Rose',
+                type: 'Sandstone',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/e5808b3e-c0e2-4716-892b-05daa43411b4',
+                description: 'Sand Rose reveals a delicate palette of sand and pink tones. Composed mainly of silica, it combines lightness and strength.',
+                characteristics: 'Sand and pink tones, silica-based, light yet strong composition',
+                applications: 'Natural finishes, exterior installations, warm-toned interiors',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            },
+            'n\'adjer stone': {
+                name: 'N\'Adjer Stone',
+                type: 'Sandstone',
+                image: 'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/e7120d01-152c-4a79-987f-f2fab90fd208',
+                description: 'Extracted from the majestic Tassili N\'Ajjer plateau in the heart of the Algerian Sahara. Its slightly grey‑beige tones are inspired by the arid reliefs of this mythical region.',
+                characteristics: 'Grey-beige Saharan tones, desert-inspired patterns, authentic Algerian heritage',
+                applications: 'Desert-themed design, authentic heritage installations, cultural interiors',
+                finitions: ['Polished', 'Bush-hammered', 'Honed']
+            }
+        };
+
+        // Open modal when stone card is clicked
+        document.querySelectorAll('.stone-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const stoneName = this.querySelector('.stone-card-header h3').textContent.toLowerCase().trim();
+                const stone = stoneData[stoneName];
+                
+                if (stone) {
+                    document.getElementById('modalStoneName').textContent = stone.name;
+                    document.getElementById('modalStoneType').textContent = stone.type;
+                    document.getElementById('modalStoneImage').src = stone.image;
+                    document.getElementById('modalDescription').textContent = stone.description;
+                    document.getElementById('modalCharacteristics').textContent = stone.characteristics;
+                    document.getElementById('modalApplications').textContent = stone.applications;
+                    
+                    const finitionsHtml = stone.finitions.map(f => `<span class="finition-badge">${f}</span>`).join('');
+                    document.getElementById('modalFinitions').innerHTML = finitionsHtml;
+                    
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        // Close modal functions
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        closeModalBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Contact button redirect
+        contactBtn.addEventListener('click', function() {
+            document.querySelector('a[href="#contact"]').click();
+            closeModal();
+        });
+
+        // Keyboard shortcut to close
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    </script>
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</body>
+</html>
